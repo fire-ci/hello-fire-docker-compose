@@ -1,0 +1,27 @@
+version: '3.1'
+
+services:
+
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: john
+      POSTGRES_PASSWORD: mysecretpassword
+    expose:
+      - 5432
+
+  myapp:
+    build: .
+    image: myapp
+    command: yarn start
+    expose:
+      - 8000
+    depends_on:
+      - db
+
+  myapp-tests:
+    image: myapp
+    command: dockerize -wait tcp://db:5432 -wait tcp://myapp:8000 -timeout 10s bash -c "node db/init.js && yarn test"
+    depends_on:
+      - db
+      - myapp
