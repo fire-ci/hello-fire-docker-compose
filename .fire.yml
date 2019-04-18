@@ -1,4 +1,4 @@
 version: 2
 
 pipeline:
-  dockercomposefile: docker-compose-ci.yml
+  dockercomposefile: docker-compose.yml
